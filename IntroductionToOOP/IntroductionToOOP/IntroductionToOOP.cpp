@@ -8,7 +8,7 @@ using namespace std;
 //#define STRUCT_POINT // CTRL + SPACE
 //#define DISTANCE_CHECK
 //#define CONSTRUCTORS_CHECK
-#define ASSINGMENT_CHECK
+//#define ASSINGMENT_CHECK
 
 //Создавая структуру или класс, мы создаем новый тип данных
 class Point
@@ -154,6 +154,11 @@ int main()
 	B.print();
 	C.print();
 #endif // ASSINGMENT_CHECK
+
+	Point A(2, 3);
+	Point B(7, 8);
+	Point C = A + B;
+	C.print();
 
 }
 

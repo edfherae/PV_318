@@ -9,6 +9,7 @@ using namespace std;
 //#define DISTANCE_CHECK
 //#define CONSTRUCTORS_CHECK
 //#define ASSINGMENT_CHECK
+//#define ARITHMETICAL_OPERATORS_CHECK
 
 //Создавая структуру или класс, мы создаем новый тип данных
 class Point
@@ -58,6 +59,12 @@ public:
 		this->y = other.y;
 		cout << "CopyConstructor:\t" << this << endl;
 	}
+	Point(Point&& other)
+	{
+		this->x = other.x;
+		this->y = other.y;
+		cout << "MoveConstructor:\t" << this << endl;
+	}
 	~Point()
 	{
 		cout << "Destructor:\t\t" << this << endl;
@@ -70,6 +77,19 @@ public:
 		this->y = other.y;
 		cout << "CopyAssignment:\t\t" << this << endl;
 		return *this;
+	}
+	Point& operator++() //prefix increment
+	{
+		x++;
+		y++;
+		return *this;
+	}
+	Point operator++(int) //suffix increment
+	{
+		Point old = *this;
+		x++;
+		y++;
+		return old;
 	}
 
 	//		Methods
@@ -84,6 +104,39 @@ public:
 };
 
 double distance(const Point& A, const Point& B);
+
+Point operator+(const Point& left, const Point& right) // всегда по значению
+{
+	Point result; // default constructor
+	result.set_x(left.get_x() + right.get_x());
+	result.set_y(left.get_y() + right.get_y());
+	return result;
+}
+Point operator-(const Point& left, const Point& right)
+{
+	Point result // constructor
+	(
+		left.get_x() - right.get_x(),
+		left.get_y() - right.get_y()
+	);
+	return result;
+}
+Point operator*(const Point& left, const Point& right)
+{
+	return Point // безымянная временная переменная
+	(
+		left.get_x() * right.get_x(),
+		left.get_y() * right.get_y()
+	);
+}
+Point operator/(const Point& left, const Point& right)
+{
+	return Point(left.get_x() / right.get_x(), left.get_y() / right.get_y()); //geek version
+}
+bool operator==(const Point& left, const Point& right)
+{
+	return left.get_x() == right.get_x() && left.get_y() == right.get_y();
+}
 
 int main()
 {
@@ -155,10 +208,26 @@ int main()
 	C.print();
 #endif // ASSINGMENT_CHECK
 
+#ifdef ARITHMETICAL_OPERATORS_CHECK
 	Point A(2, 3);
 	Point B(7, 8);
-	Point C = A + B;
+	//A.print();
+	//B.print();
+	Point C = A - B;
 	C.print();
+	C = A + B;
+	C.print();
+	C = A * B;
+	C.print();
+	C = A / B;
+	C.print();
+	C++;
+	C.print();
+#endif // ARITHMETICAL_OPERATORS_CHECK
+
+	//cout << (2 == 3) << endl;
+	cout << (Point(2, 3) == Point(2, 3)) << endl;
+	cout << (Point(2, 3) == Point(3, 3)) << endl;
 
 }
 

@@ -59,12 +59,12 @@ public:
 		this->y = other.y;
 		cout << "CopyConstructor:\t" << this << endl;
 	}
-	Point(Point&& other)
+	/*Point(Point&& other)
 	{
 		this->x = other.x;
 		this->y = other.y;
 		cout << "MoveConstructor:\t" << this << endl;
-	}
+	}*/
 	~Point()
 	{
 		cout << "Destructor:\t\t" << this << endl;

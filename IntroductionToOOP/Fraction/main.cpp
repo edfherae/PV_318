@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 using namespace std;
 #define tab "\t"
@@ -325,12 +326,33 @@ std::ostream& operator<<(std::ostream& os, const Fraction& obj)
 	else if (obj.get_integer() == 0) os << 0;
 	return os;
 }
-std::istream& operator>>(std::istream& os, Fraction& obj)
+std::istream& operator>>(std::istream& is, Fraction& obj)
 {
-	int integer, numerator, denominator;
-	os >> integer >> numerator >> denominator;
-	obj.set_integer(integer), obj.set_numerator(numerator), obj.set_denominator(denominator);
-	return os;
+	const int SIZE = 64;
+	char buffer[SIZE]{};
+	//is >> buffer;
+	is.getline(buffer, SIZE);
+	int number[3];
+	int n = 0;
+	const char delimiters[] = "(/) +";
+	for (char* pch = strtok(buffer, delimiters); pch; pch = strtok(NULL, delimiters))
+		//функция strtok изменяет входную строку
+		number[n++] = atoi(pch);
+	for (int i = 0; i < n; i++) cout << number[i] << tab; cout << endl;
+	
+	switch (n)
+	{
+	case 1: obj = Fraction(number[0]); break;
+	case 2: obj = Fraction(number[0], number[1]); break;
+	case 3: obj = Fraction(number[0], number[1], number[2]); break;
+	}
+
+	return is;
+
+	//int integer, numerator, denominator;
+	//os >> integer >> numerator >> denominator;
+	//obj.set_integer(integer), obj.set_numerator(numerator), obj.set_denominator(denominator);
+	//return os;
 }
 
 //#define CONSTRUCTORS_CHECK

@@ -1,8 +1,12 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 using namespace std;
+using std::cin;
+using std::cout;
+
 #define tab "\t"
 #define delimiter "\n----------------------------------------------------------------------\n"
+#define double_delimiter "\n=====================================================================\n"
 
 class Fraction;
 Fraction operator*(Fraction left, Fraction right);
@@ -53,13 +57,24 @@ public:
 		denominator = 1;
 		cout << "DefaultConstructor:\t" << this << endl;
 	}
-	Fraction(int integer)
+	explicit Fraction(int integer) //explicit - явный, implicit - неявный
 	{
 		this->integer = integer;
 		this->numerator = 0;
 		this->denominator = 1;
 		cout << "1argConstructor:\t" << this << endl;
 	}
+	/*Fraction(double number)
+	{
+		integer = (int)number;
+		char* str = new char[sizeof(number)] {};
+		for (int i = 0; i < sizeof(str); i++)
+		{
+
+		}
+		
+		cout << "1argConstructor:\t" << this << endl;
+	}*/
 	Fraction(int numerator, int denominator)
 	{
 		this->integer = 0;
@@ -88,7 +103,7 @@ public:
 
 	//          Operators:
 
-	Fraction& operator=(const Fraction& other) //возврат type& чтобы реализовывалась ситуация a = b = c
+	Fraction& operator=(const Fraction& other) //возврат type&, чтобы реализовывалась ситуация a = b = c
 	{
 		this->integer = other.integer;
 		this->numerator = other.numerator;
@@ -156,7 +171,18 @@ public:
 	//	return os;
 	//}
 
-	//          Methods:
+	//			Type-cast operators
+
+	explicit operator int()const
+	{
+		return integer;
+	}
+	operator double()
+	{
+		return (double)(integer * denominator + numerator) / denominator;
+	}
+
+	//		  Methods:
 
 	Fraction& reduce()
 	{
@@ -194,14 +220,6 @@ public:
 		swap(inverted.numerator, inverted.denominator);
 		return inverted;
 	}
-	/*Fraction& to_common_denominator(Fraction other)
-	{
-		if (other.integer) other.to_improper();
-		if (this->integer) this->to_improper();
-		this->numerator *= other.denominator;
-		this->denominator *= other.denominator;
-		return *this;
-	}*/
 	double fraction_result()
 	{
 		if (denominator != 0)
@@ -339,7 +357,7 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 		//функция strtok изменяет входную строку
 		number[n++] = atoi(pch);
 	for (int i = 0; i < n; i++) cout << number[i] << tab; cout << endl;
-	
+
 	switch (n)
 	{
 	case 1: obj = Fraction(number[0]); break;
@@ -358,7 +376,11 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 //#define CONSTRUCTORS_CHECK
 //#define ARITHMETICAL_OPERATORS_CHECK
 //#define COMPARISON_OPERATORS_CHECK
-#define STREAM_CHECK
+//#define STREAM_CHECK
+//#define TYPE_CONVERTIONS_BASICS
+//#define CONVERTIONS_FROM_OTHER_TO_CLASS
+#define CONVERTIONS_TASK_1
+#define CONVERTIONS_TASK_2
 
 int main()
 {
@@ -464,6 +486,45 @@ int main()
 	cout << "Введите дробь (целая часть, числитель, знаменатель): "; cin >> A;
 	cout << A << endl;
 #endif // STREAM_CHECK
+
+#ifdef TYPE_CONVERTIONS_BASICS
+	int a = 2;	 //No convertions
+	double b = 3;//Convertion from less to more
+	int c = b;	 //Convertion from more to less withous dataloss
+	int d = 2.5; //Convertion from more to less with dataloss
+	cout << sizeof(int) << endl;
+	cout << sizeof(double) << endl;
+#endif // TYPE_CONVERTIONS_BASICS
+
+#ifdef CONVERTIONS_FROM_OTHER_TO_CLASS
+	Fraction A = (Fraction)5; //convertion from int to fraction
+	//1 arg constructor
+	cout << A << endl;
+
+	cout << double_delimiter << endl;
+
+	Fraction B;
+	cout << delimiter << endl;
+	B = Fraction(8);
+	cout << B << endl;
+
+	cout << double_delimiter << endl;
+#endif // CONVERTIONS_FROM_OTHER_TO_CLASS
+
+#ifdef CONVERTIONS_TASK_1
+	Fraction A(2, 3, 4);
+	cout << A << endl;
+
+	//int a = (int)A;
+	double a = A;
+	cout << a << endl;
+#endif // CONVERTIONS_TASK_1
+
+
+#ifdef CONVERTIONS_TASK_2
+	Fraction B = (Fraction)2.75;
+	cout << B << endl;
+#endif // CONVERTIONS_TASK_2
 
 
 	//int a = 2;

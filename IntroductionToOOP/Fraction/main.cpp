@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES	
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 using namespace std;
@@ -11,7 +12,6 @@ using std::cout;
 class Fraction;
 Fraction operator*(Fraction left, Fraction right);
 Fraction operator/(const Fraction& left, const Fraction& right);
-
 
 class Fraction // m/n
 {
@@ -64,17 +64,16 @@ public:
 		this->denominator = 1;
 		cout << "1argConstructor:\t" << this << endl;
 	}
-	/*Fraction(double number)
+	Fraction(double decimal)
 	{
-		integer = (int)number;
-		char* str = new char[sizeof(number)] {};
-		for (int i = 0; i < sizeof(str); i++)
-		{
-
-		}
-		
+		decimal += 1e-10;
+		integer = decimal;
+		decimal -= integer;
+		denominator = 1e+9; // 1 * 10^9
+		numerator = decimal * denominator;
+		reduce();
 		cout << "1argConstructor:\t" << this << endl;
-	}*/
+	}
 	Fraction(int numerator, int denominator)
 	{
 		this->integer = 0;
@@ -179,7 +178,7 @@ public:
 	}
 	operator double()
 	{
-		return (double)(integer * denominator + numerator) / denominator;
+		return integer + (double)numerator / denominator; //приоритет: / принимает int и int, на выходе Int, дробная часть теряется
 	}
 
 	//		  Methods:
@@ -516,13 +515,13 @@ int main()
 	cout << A << endl;
 
 	//int a = (int)A;
-	double a = A;
+	double a = (double)A;
 	cout << a << endl;
 #endif // CONVERTIONS_TASK_1
 
 
 #ifdef CONVERTIONS_TASK_2
-	Fraction B = (Fraction)2.75;
+	Fraction B = M_PI;
 	cout << B << endl;
 #endif // CONVERTIONS_TASK_2
 

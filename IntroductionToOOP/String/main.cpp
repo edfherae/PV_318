@@ -121,16 +121,19 @@ istream& operator>>(istream& is, String& obj)
 	return is;
 }
 
+//#define HOME_WORK
+
 int main()
 {
 	setlocale(LC_ALL, "");
 
+#ifdef HOME_WORK
 	String str1 = "Hello";
 	String str2("World");    //на 5 элементов позволяет, на 4 Heap Corruption при вызове деструктора
-							 //то есть при 5 элементах затирается лишь нуль, а на 4 уже и брейк поинт?
-							 // 
-							 //почему при затертом нуле выводит не 80 элементов белиберды, а лишь несколько?
-							 //строка ведь полностью инициализирована нулями, при создании есть увловие остановки на нуле
+	//то есть при 5 элементах затирается лишь нуль, а на 4 уже и брейк поинт?
+	// 
+	//почему при затертом нуле выводит не 80 элементов белиберды, а лишь несколько?
+	//строка ведь полностью инициализирована нулями, при создании есть увловие остановки на нуле
 	cout << str1 << endl;
 	cout << str2 << endl;
 
@@ -144,22 +147,24 @@ int main()
 
 	cout << delimiter << endl;
 
+	cout << delimiter << endl;
 	String str3 = str1 + str2;
 	cout << str3 << endl;
+	cout << delimiter << endl;
 
 	cout << delimiter << endl;
 
 	String hola = "Hola";
 	//String str4 = hola;			//почему отрабатывает 1arg только единожды? почему не вызывается CC
 	String str4 = String("Hola");	//Не отрабатывает Move, хотя говорится, что Move применяется
-									//при использовании в инициализации безымянных объектов
+	//при использовании в инициализации безымянных объектов
 
-	/*https://legacy.cplusplus.com/doc/tutorial/classes2/
-	Compilers already optimize many cases that formally require a 
-	move-construction call in what is known as Return Value Optimization.
-	Most notably, when the value returned by a function is used to initialize an object.
-	In these cases, the move constructor may actually never get called.*/
-	
+/*https://legacy.cplusplus.com/doc/tutorial/classes2/
+Compilers already optimize many cases that formally require a
+move-construction call in what is known as Return Value Optimization.
+Most notably, when the value returned by a function is used to initialize an object.
+In these cases, the move constructor may actually never get called.*/
+
 	String str5;
 	str5 = str4 + String("amigos");
 	str5.print();
@@ -169,4 +174,10 @@ int main()
 	String input_test;
 	cin >> input_test;
 	input_test.print();
+#endif // HOME_WORK
+
+	String str1 = "Hello";
+	String str2 = "World";
+	String str3 = str1 + str2;
+	cout << str3 << endl;
 }

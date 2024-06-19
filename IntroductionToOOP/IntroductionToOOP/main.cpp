@@ -10,7 +10,7 @@ using namespace std;
 //#define CONSTRUCTORS_CHECK
 //#define ASSINGMENT_CHECK
 //#define ARITHMETICAL_OPERATORS_CHECK
-
+//
 //Создавая структуру или класс, мы создаем новый тип данных
 class Point
 {

@@ -9,6 +9,18 @@ class Matrix
 	int cols;
 	int** data;
 public:
+	int get_rows()const
+	{
+		return rows;
+	}
+	int get_cols()const
+	{
+		return cols;
+	}
+	int** const get_data()const
+	{
+		return data;
+	}
 	//		Constructors:
 	Matrix(int rows = 0, int cols = 0) : rows(rows), cols(cols), data(new int* [rows] {})
 	{
@@ -48,6 +60,7 @@ public:
 				this->data[i][j] = other.data[i][j];
 		return *this;
 	}
+	
 	//		Methods:
 	void print()const
 	{
@@ -62,9 +75,26 @@ public:
 		}
 	}
 };
+std::ostream& operator<<(std::ostream& os, const Matrix& obj)
+{
+	os << "Rows: " << obj.get_rows() << tab << "Cols: " << obj.get_cols() << endl;
+	for (int i = 0; i < obj.get_rows(); i++)
+	{
+		for (int j = 0; j < obj.get_cols(); j++)
+		{
+			os << obj.get_data()[i][j] << tab;
+		}
+		os << endl;
+	}
+	return os;
+}
+
+//#define CONSTRUCTORS_CHECK
+#define OPERATORS_CHECK
 
 int main()
 {
+#ifdef CONSTRUCTORS_CHECK
 	Matrix A;
 	A.print();
 
@@ -77,4 +107,8 @@ int main()
 	Matrix D;
 	D = C;
 	D.print();
+#endif // CONSTRUCTORS_CHECK
+	Matrix A(3, 3);
+
+	cout << A << endl;
 }

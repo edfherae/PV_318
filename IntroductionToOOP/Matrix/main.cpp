@@ -2,6 +2,7 @@
 using namespace std;
 
 #define tab "\t"
+#define delimiter "\n-------------------------------------------------------\n"
 
 class Matrix
 {
@@ -18,6 +19,10 @@ public:
 		return cols;
 	}
 	int** const get_data()const
+	{
+		return data;
+	}
+	int** set_data()
 	{
 		return data;
 	}
@@ -43,6 +48,7 @@ public:
 		for (int i = 0; i < rows; i++)
 			delete[] data[i];
 		delete[] data;
+		this->data = nullptr;
 	}
 	//		Operators:
 	Matrix& operator=(const Matrix& other)
@@ -60,7 +66,58 @@ public:
 				this->data[i][j] = other.data[i][j];
 		return *this;
 	}
-	
+	Matrix& operator+(const int other)
+	{
+		for (int i = 0; i < rows; i++)
+			for (int j = 0; j < cols; j++)
+				data[i][j] += other;
+		return *this;
+	}
+	Matrix& operator+(const Matrix& other)
+	{
+		if (this->rows * this->cols != other.rows * other.cols)
+		{
+			cout << "Матрицы разные по размеру\n";
+			return *this;
+		}
+		for (int i = 0; i < this->rows; i++)
+			for (int j = 0; j < this->cols; j++)
+				data[i][j] += other.get_data()[i][j];
+		return *this;
+	}
+	Matrix& operator-(const int other)
+	{
+		for (int i = 0; i < rows; i++)
+			for (int j = 0; j < cols; j++)
+				data[i][j] -= other;
+		return *this;
+	}
+	Matrix& operator-(const Matrix& other)
+	{
+		if (this->rows * this->cols != other.rows * other.cols)
+		{
+			cout << "Матрицы разные по размеру\n";
+			return *this;
+		}
+		for (int i = 0; i < this->rows; i++)
+			for (int j = 0; j < this->cols; j++)
+				data[i][j] -= other.get_data()[i][j];
+		return *this;
+	}
+	Matrix& operator*(const int other)
+	{
+		for (int i = 0; i < rows; i++)
+			for (int j = 0; j < cols; j++)
+				data[i][j] *= other;
+		return *this;
+	}
+	/*Matrix& operator*(const Matrix& other)
+	{
+		for (int i = 0; i < this->rows; i++)
+			for (int j = 0; j < this->cols; j++)
+				data[i][j] *= other.get_data()[i][j];
+		return *this;
+	}*/
 	//		Methods:
 	void print()const
 	{
@@ -74,10 +131,19 @@ public:
 			cout << endl;
 		}
 	}
+	void fill_rand()
+	{
+		for (int i = 0; i < rows; i++)
+		{
+			for (int j = 0; j < cols; j++)
+			{
+				data[i][j] = rand() % 100;
+			}
+		}
+	}
 };
 std::ostream& operator<<(std::ostream& os, const Matrix& obj)
 {
-	os << "Rows: " << obj.get_rows() << tab << "Cols: " << obj.get_cols() << endl;
 	for (int i = 0; i < obj.get_rows(); i++)
 	{
 		for (int j = 0; j < obj.get_cols(); j++)
@@ -94,6 +160,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix& obj)
 
 int main()
 {
+	setlocale(LC_ALL, "");
 #ifdef CONSTRUCTORS_CHECK
 	Matrix A;
 	A.print();
@@ -109,6 +176,38 @@ int main()
 	D.print();
 #endif // CONSTRUCTORS_CHECK
 	Matrix A(3, 3);
+	Matrix B(3, 3, 1);
+	A.fill_rand();
 
+	cout << A << endl;
+	cout << B << endl;
+
+	cout << delimiter << endl;
+
+	cout << "A + 3: \n";
+	A + 3;
+	cout << A << endl;
+	cout << "A + B: \n";
+	A + B;
+	cout << A << endl;
+
+	Matrix C(2, 4);
+	C.print();
+	cout << "A + C: \n";
+	A + C;
+	cout << A << endl;
+
+	cout << delimiter << endl;
+
+	cout << "A - 4: \n";
+	A - 4;
+	cout << A << endl;
+	cout << "A - B: \n";
+	A - B;
+	cout << A << endl;
+
+	C.print();
+	cout << "A - C: \n";
+	A - C;
 	cout << A << endl;
 }
